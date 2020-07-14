@@ -3,7 +3,7 @@
 ### Installation
 
 ```
-cd HimalayaFountainInteractiveApp
+cd ExampleApp
 npm install
 react-native run-android
 cd ios
