@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>This app requires bluetooth permission</string>
+  	<key>UISupportedExternalAccessoryProtocols</key>
+  	<array>
+    	<string>com.apple.m1</string>
+  	</array>	
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app uses the microphone to analyze sound level.</string>
 	<key>CFBundleDevelopmentRegion</key>
