@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "@react-native-community/toolbar-android": "0.1.0-rc.2",
-    "easy-bluetooth-classic": "^1.0.4",
     "native-base": "^2.13.12",
     "react": "16.13.1",
     "react-native": "0.63.0",
