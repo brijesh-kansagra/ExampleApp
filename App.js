@@ -4,6 +4,7 @@ import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Aler
 import BluetoothManager from './components/BluetoothManager';
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
+import BluetoothA2DP from './components/BluetoothA2DP';
 
 const errorHandler = (e, isFatal) => {
   if (isFatal) {
@@ -32,7 +33,7 @@ export default function App() {
   return (
     <>
       <AudioToDecible />
-      <BluetoothManager/>
+      <BluetoothA2DP />
     </>  
   );
 }
