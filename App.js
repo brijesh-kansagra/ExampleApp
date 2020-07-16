@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert } from 'react-native';
 
-import BluetoothStatus from './components/BluetoothStatus';
 import BluetoothManager from './components/BluetoothManager';
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
