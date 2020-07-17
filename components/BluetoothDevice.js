@@ -31,7 +31,7 @@ const BluetoothDevice = props => {
             console.log("Error stopping bluetooth streaming "+error);    
         });
 
-        A2dp.disconnect(props.id).then( () => {
+        A2dp.disconnectA2dp(props.id).then( () => {
              console.log("Disconnected device: "+props.id);    
              setConnected(false);
         }).catch((error) => {
