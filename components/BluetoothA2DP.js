@@ -1,29 +1,34 @@
 import React from 'react';
-import {View, Button, Text} from 'react-native';
+import {View, Button, Text, Modal} from 'react-native';
 import A2dp from 'react-native-a2dp';
 
 const BluetoothA2DP = props => {
 
-    const devices = async () => {
-        console.log("Fetching device list");
-        let deviceList = await A2dp.deviceList();
-        console.log(deviceList);
-        console.log("Connecting to device: "+deviceList[0].id);
-        await A2dp.connectA2dp(deviceList[0].id);
-        if(Array.isArray(deviceList) && deviceList.length > 0){
-            console.log("Starting bluetooth streaming");
-            A2dp.startBluetoothSco();
-            console.log("Stopping bluetooth streaming");
-            A2dp.stopBluetoothSco();
-        }else{
-            console.log("Device is empty");
-        }
-        
+    const scan = async () => {
+        console.log("Scanning devices");
+        A2dp.scan().then( () => {
+            console.log("Scanning completed");
+
+            console.log("Fetching device list");
+            A2dp.deviceList().then( (deviceList) => {
+                console.log("Devices: "+deviceList);
+                props.addDevices(deviceList);
+            }).catch( (error) => {
+                console.log("Error fetching device list: "+error);
+            });
+
+        }).catch( (error) => {
+            console.log("Error scanning devices: "+error);
+        });        
+    }
+
+    function componentDidMount() {
+        this.scan();
     }
 
     return(
         <View>
-            <Button title="Scan Devices" onPress={devices}></Button>
+            <Button title="Scan Fountains" onPress={scan}></Button>
         </View>
     );
 };

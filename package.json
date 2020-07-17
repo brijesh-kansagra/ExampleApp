@@ -14,8 +14,8 @@
     "native-base": "^2.13.12",
     "react": "16.13.1",
     "react-native": "0.63.0",
-    "react-native-a2dp": "^1.0.3",
-    "react-native-bluetooth-classic": "^0.10.9",
+    "react-native-a2dp": "pratik-patel/react-native-a2dp.git",
+    "react-native-bluetooth-status": "^1.5.1",
     "react-native-exception-handler": "^2.10.8",
     "react-native-permissions": "^2.1.5"
   },
