@@ -21,8 +21,8 @@ import {
   StatusBar
 } from 'react-native';
 
-import Sound from '../src/AudioPlayer';
-import {AudioRecorder, AudioUtils} from '../src/Audio';
+import Sound from 'react-native-sound';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 class AudioToDecible extends Component {
 
@@ -42,12 +42,13 @@ class AudioToDecible extends Component {
         Channels: 1,
         AudioQuality: "Low",
         AudioEncoding: "aac",
-        AudioEncodingBitRate: 32000
+        AudioEncodingBitRate: 32000,
+        MeteringEnabled: true
       });
     }
 
     async componentDidMount() {
-      AudioRecorder.checkAuthorizationStatus().then((isAuthorised) => {
+      AudioRecorder.requestAuthorization().then((isAuthorised) => {
         this.setState({ hasPermission: isAuthorised });
         console.log('Audio Permission : ', isAuthorised);
 
@@ -134,7 +135,7 @@ class AudioToDecible extends Component {
             console.log('failed to load the sound', error);
           }
         });
-        sound.setA2DPPreferredDevice();
+
         setTimeout(() => {
           sound.play((success) => {
             if (success) {
@@ -146,7 +147,6 @@ class AudioToDecible extends Component {
         }, 100);
       }, 100);
     }
-
 
     render() {
       return (
