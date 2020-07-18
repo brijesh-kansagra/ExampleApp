@@ -6,6 +6,13 @@ import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-e
 import BluetoothA2DP from './components/BluetoothA2DP';
 import BluetoothDevice from './components/BluetoothDevice';
 import BluetoothController from './components/BluetoothController';
+import MessageQueue from 'react-native/Libraries/BatchedBridge/MessageQueue.js'; 
+
+const spyFunction = (msg) => { 
+  console.log("spy on bridge:", msg);
+}; 
+
+MessageQueue.spy(spyFunction);
 
 export default function App() {
 
@@ -14,7 +21,28 @@ export default function App() {
 
   const addDevicesHandler = (deviceList) => {
     console.log("Device List"+deviceList);
-    setDevices(deviceList);
+    if(deviceList.length > 0){
+      setDevices(deviceList);
+      //uniqueDevices();
+    }
+  }
+
+  const addDeviceHandler = (device) => {
+    console.log("Adding device "+device);
+    //let deviceList = [...devices,device];
+    setDevices ( devices => [
+      ...devices,device
+    ]);
+    //uniqueDevices();
+  }
+
+  const uniqueDevices = () => {
+    console.log("Before filter: "+devices);
+     let x = (devices) => (devices).filter((index,device) =>
+        devices.indexOf(index) === device && device != null
+     );
+     setDevices(x);
+     console.log("After filter: "+devices);
   }
 
   const bluetoothHandler = (status) => {
@@ -26,7 +54,7 @@ export default function App() {
     <View>
       <AudioToDecible />
       <BluetoothController onPress={bluetoothHandler}/>
-      <BluetoothA2DP visible={bluetoothStatus} addDevices={addDevicesHandler}/>
+      <BluetoothA2DP visible={bluetoothStatus} addDevices={addDevicesHandler} addDevice={addDeviceHandler}/>
       <FlatList
         keyExtractor={(item, index)=>item.id}
         data={devices}
