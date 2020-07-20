@@ -17,7 +17,6 @@ const BluetoothDevice = props => {
             }).catch( (error) => {
                 console.log("Error starting bluetooth streaming");
             });
-
         }).catch((error) => {
             console.log("Error connecting device: "+error);
         });
@@ -50,6 +49,6 @@ const BluetoothDevice = props => {
             </View>
         </View>
     );
-};
+}; 
 
 export default BluetoothDevice;

@@ -1,15 +1,14 @@
 import React, {useEffect} from 'react';
-import {View, Button, NativeEventEmitter, NativeModules} from 'react-native';
+import {View, Button, NativeEventEmitter, NativeModules, StyleSheet} from 'react-native';
 import A2dp from 'react-native-a2dp';
 
 const BluetoothA2DP = props => {
 
     const scan = async () => {
-
         console.log("Scanning devices");
+        props.scanDevices();
         A2dp.scan().then( () => {
             console.log("Scanning completed");        
-
             console.log("Fetching device list");
             A2dp.deviceList().then( (deviceList) => {
                 console.log("Devices: "+deviceList);
@@ -44,29 +43,13 @@ const BluetoothA2DP = props => {
         }
       });
     
-
-    /* function componentDidMount() {
-        console.log("componentDidMount");
-        const { A2dp } = NativeModules.A2dp;
-        const eventEmitter = new NativeEventEmitter(A2dp);
-        this.listener1 = eventEmitter.addListener("device",addDevice);
-        this.listener2 = DeviceEventEmitter.addListener('device',addDevice);
-
-        const { BluetoothA2DP } = NativeModules.BluetoothA2DP;
-        const eventEmitter1 = new NativeEventEmitter(BluetoothA2DP);
-        this.listener3 = eventEmitter1.addListener("device",addDevice);
-        this.listener4 = DeviceEventEmitter.addListener('device',addDevice); 
-    }
-
-    function componentWillUnmount() {
-        this.eventListener.remove();
-    } */
-
     return(
         <View>
             <Button title="Scan Fountains" onPress={scan}></Button>
         </View>
     );
 };
+
+
 
 export default BluetoothA2DP;

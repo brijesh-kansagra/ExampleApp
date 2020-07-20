@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert } from 'react-native';
+import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes } from 'react-native';
 
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
@@ -7,6 +7,7 @@ import BluetoothA2DP from './components/BluetoothA2DP';
 import BluetoothDevice from './components/BluetoothDevice';
 import BluetoothController from './components/BluetoothController';
 import MessageQueue from 'react-native/Libraries/BatchedBridge/MessageQueue.js'; 
+import Spinner from 'react-native-loading-spinner-overlay';
 
 const spyFunction = (msg) => { 
   console.log("spy on bridge:", msg);
@@ -15,6 +16,9 @@ const spyFunction = (msg) => {
 MessageQueue.spy(spyFunction);
 
 export default function App() {
+
+
+  const [enableSpinner,setEnableSpinner] = useState(false);
 
   const [devices,setDevices] = useState([]);
   const [bluetoothStatus, setBluetoothStatus] = useState(false);
@@ -76,11 +80,22 @@ export default function App() {
     setBluetoothStatus(status);
   }
 
+  const scanDevicesHandler = (text) => {
+    setEnableSpinner(true);
+    setInterval(() => {
+      setEnableSpinner(false);
+    },12000);
+  }
+
   return (
     <View>
       <AudioToDecible />
       <BluetoothController onPress={bluetoothHandler}/>
-      <BluetoothA2DP visible={bluetoothStatus} addDevices={addDevicesHandler} addDevice={addDeviceHandler}/>
+      <Spinner
+            visible={enableSpinner}
+            textContent='Scanning Devices...'
+      />
+      <BluetoothA2DP visible={bluetoothStatus} scanDevices={scanDevicesHandler} addDevices={addDevicesHandler} addDevice={addDeviceHandler}/>
       <FlatList
         keyExtractor={(item, index)=>item.id}
         data={devices}
