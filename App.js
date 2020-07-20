@@ -20,30 +20,56 @@ export default function App() {
   const [bluetoothStatus, setBluetoothStatus] = useState(false);
 
   const addDevicesHandler = (deviceList) => {
-    console.log("Device List"+deviceList);
+    console.log("Device List "+deviceList);    
     if(deviceList.length > 0){
-      setDevices(deviceList);
-      //uniqueDevices();
+
+      if(devices.length > 0){
+        setDevices(Array.from(uniqueDevices([...devices,...deviceList])));
+        console.log("AddDeviceSHandler devices length > 0"+devices);
+      }else{
+        setDevices(Array.from(uniqueDevices([...deviceList])));
+        console.log("AddDeviceSHandler devices length = 0"+devices);
+      }
     }
+    console.log("After filter, devices: "+devices);
   }
 
   const addDeviceHandler = (device) => {
     console.log("Adding device "+device);
-    //let deviceList = [...devices,device];
-    setDevices ( devices => [
-      ...devices,device
-    ]);
-    //uniqueDevices();
+    if(device!=null){
+      if(devices.length > 0){
+        setDevices(Array.from(uniqueDevices([...devices,device])));
+        console.log("AddDeviceHandler devices length > 0"+devices);
+      }else{
+        let x = new Array(device);
+        setDevices(x);
+        console.log("AddDeviceHandler devices length = 0"+devices);
+      }
+      console.log("After filter, devices: "+devices);
+    }
   }
 
-  const uniqueDevices = () => {
-    console.log("Before filter: "+devices);
-     let x = (devices) => (devices).filter((index,device) =>
-        devices.indexOf(index) === device && device != null
-     );
-     setDevices(x);
-     console.log("After filter: "+devices);
-  }
+  const uniqueDevices = (deviceList) => {
+    let mymap = new Map(); 
+    deviceList.filter(el => { 
+    const val = mymap.get(el.id); 
+    if(val) { 
+        if(el.id < val) { 
+          console.log("Removing element "+el.id);
+          mymap.delete(el.id); 
+          mymap.set(el.id, el); 
+          console.log("Adding element "+el.id);
+            return true; 
+        } else { 
+            return false; 
+        } 
+    } 
+    mymap.set(el.id, el);
+    return true;
+  });
+  console.log("Final list: "+mymap.values());
+  return mymap.values();
+}
 
   const bluetoothHandler = (status) => {
     console.log("Bluetooth Status: "+status);
