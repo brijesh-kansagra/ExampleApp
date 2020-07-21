@@ -1,19 +1,12 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes } from 'react-native';
+import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes, Share } from 'react-native';
 
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
 import BluetoothA2DP from './components/BluetoothA2DP';
 import BluetoothDevice from './components/BluetoothDevice';
 import BluetoothController from './components/BluetoothController';
-import MessageQueue from 'react-native/Libraries/BatchedBridge/MessageQueue.js'; 
 import Spinner from 'react-native-loading-spinner-overlay';
-
-const spyFunction = (msg) => { 
-  console.log("spy on bridge:", msg);
-}; 
-
-MessageQueue.spy(spyFunction);
 
 export default function App() {
 
@@ -87,8 +80,23 @@ export default function App() {
     },12000);
   }
 
+  const onShare = async () => {
+    try {
+      console.log('sharing..')
+      const result = await Share.share({
+        message: 'Try Example App. AppLink: https://play.google.com/store/apps/details?id=com.exampleapp'
+      });
+      console.log('sharing result ',result)
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <View>
+      <View style={{ marginTop: 50 }}>
+        <Button onPress={onShare} title="Share" />
+      </View>
       <AudioToDecible />
       <BluetoothController onPress={bluetoothHandler}/>
       <Spinner
