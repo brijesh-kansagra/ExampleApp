@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes, Share } from 'react-native';
+import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes, Share, Platform } from 'react-native';
 
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
@@ -107,7 +107,9 @@ export default function App() {
             visible={enableSpinner}
             textContent='Scanning Devices...'
       />
+      {Platform.OS === 'android' ?
       <BluetoothA2DP visible={bluetoothStatus} scanDevices={scanDevicesHandler} addDevices={addDevicesHandler} addDevice={addDeviceHandler}/>
+      : null}
       <FlatList
         keyExtractor={(item, index)=>item.id}
         data={devices}

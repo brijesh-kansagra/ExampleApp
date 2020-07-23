@@ -70,6 +70,10 @@ PODS:
   - OpenSSL-Universal (1.0.2.19):
     - OpenSSL-Universal/Static (= 1.0.2.19)
   - OpenSSL-Universal/Static (1.0.2.19)
+  - Permission-BluetoothPeripheral (2.1.5):
+    - RNPermissions
+  - Permission-Microphone (2.1.5):
+    - RNPermissions
   - RCTRequired (0.63.0)
   - RCTTypeSafety (0.63.0):
     - FBLazyVector (= 0.63.0)
@@ -344,6 +348,8 @@ DEPENDENCIES:
   - FlipperKit/SKIOSNetworkPlugin (~> 0.41.1)
   - Folly (from `../node_modules/react-native/third-party-podspecs/Folly.podspec`)
   - glog (from `../node_modules/react-native/third-party-podspecs/glog.podspec`)
+  - Permission-BluetoothPeripheral (from `../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec`)
+  - Permission-Microphone (from `../node_modules/react-native-permissions/ios/Microphone.podspec`)
   - RCTRequired (from `../node_modules/react-native/Libraries/RCTRequired`)
   - RCTTypeSafety (from `../node_modules/react-native/Libraries/TypeSafety`)
   - React (from `../node_modules/react-native/`)
@@ -402,6 +408,10 @@ EXTERNAL SOURCES:
     :podspec: "../node_modules/react-native/third-party-podspecs/Folly.podspec"
   glog:
     :podspec: "../node_modules/react-native/third-party-podspecs/glog.podspec"
+  Permission-BluetoothPeripheral:
+    :path: "../node_modules/react-native-permissions/ios/BluetoothPeripheral.podspec"
+  Permission-Microphone:
+    :path: "../node_modules/react-native-permissions/ios/Microphone.podspec"
   RCTRequired:
     :path: "../node_modules/react-native/Libraries/RCTRequired"
   RCTTypeSafety:
@@ -478,6 +488,8 @@ SPEC CHECKSUMS:
   Folly: b73c3869541e86821df3c387eb0af5f65addfab4
   glog: 40a13f7840415b9a77023fbcae0f1e6f43192af3
   OpenSSL-Universal: 8b48cc0d10c1b2923617dfe5c178aa9ed2689355
+  Permission-BluetoothPeripheral: b28267800e6bbedf18768e2bda7ebed3cf7a1a81
+  Permission-Microphone: af45e35013788b52eecf3cd8f13185c4b6f7bff7
   RCTRequired: e46bb77db03887b3e200d34b08515c804669db99
   RCTTypeSafety: 270fed6675c42f80fb87b47d626ef3cede1505e6
   React: e008906ff1328f9bccb345ff4f7826397ad223fc
@@ -509,6 +521,6 @@ SPEC CHECKSUMS:
   Yoga: 7d2edc5b410474191962e6dee88ee67f9b328b6b
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e9ad49836d8ebfb30bdb9eea5babed7fbbcf539e
+PODFILE CHECKSUM: f21b86ad59fbb02ef7fb4c684dd0a22fba5cb782
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3

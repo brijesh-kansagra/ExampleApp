@@ -7,6 +7,10 @@ target 'ExampleApp' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
+  permissions_path = '../node_modules/react-native-permissions/ios'
+  pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
+  pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
+
   target 'ExampleAppTests' do
     inherit! :complete
     # Pods for testing
