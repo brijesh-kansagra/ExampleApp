@@ -240,7 +240,7 @@ export default class App extends Component {
             <Button title="Retrieve connected peripherals" onPress={() => this.retrieveConnected() } />
           </View>
 
-          <ScrollView style={styles.scroll}>
+          <View style={styles.scroll}>
             {(list.length == 0) &&
               <View style={{flex:1, margin: 20}}>
                 <Text style={{textAlign: 'center'}}>No peripherals</Text>
@@ -252,7 +252,7 @@ export default class App extends Component {
               keyExtractor={item => item.id}
             />
 
-          </ScrollView>
+          </View>
         </View>
       </SafeAreaView>
     );
@@ -261,8 +261,6 @@ export default class App extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#FFF',
     width: window.width,
     height: window.height
   },

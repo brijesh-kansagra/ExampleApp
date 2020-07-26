@@ -3,12 +3,10 @@ import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Aler
 
 import AudioToDecible from './components/AudioToDecible';
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
-import BluetoothA2DP from './components/BluetoothA2DP';
-import BluetoothDevice from './components/BluetoothDevice';
 import BluetoothController from './components/BluetoothController';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SplashScreen from 'react-native-splash-screen'
-
+import BleManager from './components/BleManager';
 export default function App() {
 
   useEffect(() => {
@@ -98,29 +96,13 @@ export default function App() {
 
   return (
     <View>
-      <View style={{ marginTop: 50 }}>
-        <Button onPress={onShare} title="Share" />
-      </View>
-      <AudioToDecible />
       <BluetoothController onPress={bluetoothHandler}/>
       <Spinner
             visible={enableSpinner}
             textContent='Scanning Devices...'
       />
-      {Platform.OS === 'android' ?
-      <BluetoothA2DP visible={bluetoothStatus} scanDevices={scanDevicesHandler} addDevices={addDevicesHandler} addDevice={addDeviceHandler}/>
-      : null}
-      <FlatList
-        keyExtractor={(item, index)=>item.id}
-        data={devices}
-        renderItem={ itemData => (
-          <BluetoothDevice
-            id={itemData.item.id}
-            title={itemData.item.name}
-          />
-        )}
-      />  
-    </View> 
+      <BleManager/>
+    </View>
   );
 }
 
