@@ -244,6 +244,8 @@ PODS:
     - React
   - react-native-ble-manager (7.3.1):
     - React
+  - react-native-bluetooth-classic (0.10.9):
+    - React
   - react-native-bluetooth-status (1.5.1):
     - React
   - react-native-splash-screen (3.2.0):
@@ -366,6 +368,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-a2dp (from `../node_modules/react-native-a2dp`)
   - react-native-ble-manager (from `../node_modules/react-native-ble-manager`)
+  - react-native-bluetooth-classic (from `../node_modules/react-native-bluetooth-classic`)
   - react-native-bluetooth-status (from `../node_modules/react-native-bluetooth-status`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
@@ -439,6 +442,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-a2dp"
   react-native-ble-manager:
     :path: "../node_modules/react-native-ble-manager"
+  react-native-bluetooth-classic:
+    :path: "../node_modules/react-native-bluetooth-classic"
   react-native-bluetooth-status:
     :path: "../node_modules/react-native-bluetooth-status"
   react-native-splash-screen:
@@ -507,6 +512,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fc661eff8edbfb7e22119382c13f33bcadde0f3c
   react-native-a2dp: 35c0be2e979af57af7d77cbf35eaeba32a2f5856
   react-native-ble-manager: 73a2c5d7ca510866d2bdf67d56bec42bd76c004f
+  react-native-bluetooth-classic: 6e7844b97e4f981872f8ff121a70cab91c370054
   react-native-bluetooth-status: b1fb68e6158b3ef3886187dbc108b585870ff9aa
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: aadd91a1d6cbfae50dd41f140004f816e9e47ade

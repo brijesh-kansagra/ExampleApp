@@ -17,6 +17,7 @@
     "react-native-a2dp": "pratik-patel/react-native-a2dp.git",
     "react-native-audio": "brijesh-kansagra/react-native-audio.git",
     "react-native-ble-manager": "^7.3.1",
+    "react-native-bluetooth-classic": "^0.10.9",
     "react-native-bluetooth-status": "^1.5.1",
     "react-native-exception-handler": "^2.10.8",
     "react-native-loading-spinner-overlay": "^1.1.0",

@@ -7,6 +7,8 @@ import BluetoothController from './components/BluetoothController';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SplashScreen from 'react-native-splash-screen'
 import BleManager from './components/BleManager';
+import BlClassic from './components/BluetoothClassic';
+
 export default function App() {
 
   useEffect(() => {
@@ -95,14 +97,7 @@ export default function App() {
   };
 
   return (
-    <View>
-      <BluetoothController onPress={bluetoothHandler}/>
-      <Spinner
-            visible={enableSpinner}
-            textContent='Scanning Devices...'
-      />
-      <BleManager/>
-    </View>
+    <BlClassic/>
   );
 }
 
