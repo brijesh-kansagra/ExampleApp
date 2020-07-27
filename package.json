@@ -10,7 +10,10 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/masked-view": "^0.1.10",
     "@react-native-community/toolbar-android": "0.1.0-rc.2",
+    "@react-navigation/native": "^5.7.1",
+    "@react-navigation/stack": "^5.7.1",
     "native-base": "^2.13.12",
     "react": "16.13.1",
     "react-native": "0.63.0",
@@ -18,8 +21,11 @@
     "react-native-audio": "brijesh-kansagra/react-native-audio.git",
     "react-native-bluetooth-status": "^1.5.1",
     "react-native-exception-handler": "^2.10.8",
+    "react-native-gesture-handler": "^1.7.0",
     "react-native-loading-spinner-overlay": "^1.1.0",
     "react-native-permissions": "^2.1.5",
+    "react-native-safe-area-context": "^3.1.1",
+    "react-native-screens": "^2.9.0",
     "react-native-sound": "^0.11.0",
     "react-native-splash-screen": "^3.2.0"
   },
