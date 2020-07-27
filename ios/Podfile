@@ -11,6 +11,8 @@ target 'ExampleApp' do
   pod 'Permission-BluetoothPeripheral', :path => "#{permissions_path}/BluetoothPeripheral.podspec"
   pod 'Permission-Microphone', :path => "#{permissions_path}/Microphone.podspec"
 
+  pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+
   target 'ExampleAppTests' do
     inherit! :complete
     # Pods for testing

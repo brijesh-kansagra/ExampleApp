@@ -244,6 +244,8 @@ PODS:
     - React
   - react-native-bluetooth-status (1.5.1):
     - React
+  - react-native-safe-area-context (3.1.1):
+    - React
   - react-native-splash-screen (3.2.0):
     - React
   - React-RCTActionSheet (0.63.0):
@@ -310,7 +312,13 @@ PODS:
     - React
   - RNAudio (4.3.1):
     - React
+  - RNCMaskedView (0.1.10):
+    - React
+  - RNGestureHandler (1.7.0):
+    - React
   - RNPermissions (2.1.5):
+    - React
+  - RNScreens (2.9.0):
     - React
   - RNSound (0.11.0):
     - React
@@ -364,6 +372,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-a2dp (from `../node_modules/react-native-a2dp`)
   - react-native-bluetooth-status (from `../node_modules/react-native-bluetooth-status`)
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -377,7 +386,10 @@ DEPENDENCIES:
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - ReactNativeExceptionHandler (from `../node_modules/react-native-exception-handler`)
   - RNAudio (from `../node_modules/react-native-audio`)
+  - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - RNSound (from `../node_modules/react-native-sound`)
   - "toolbar-android (from `../node_modules/@react-native-community/toolbar-android`)"
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -436,6 +448,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-a2dp"
   react-native-bluetooth-status:
     :path: "../node_modules/react-native-bluetooth-status"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-splash-screen:
     :path: "../node_modules/react-native-splash-screen"
   React-RCTActionSheet:
@@ -462,8 +476,14 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-exception-handler"
   RNAudio:
     :path: "../node_modules/react-native-audio"
+  RNCMaskedView:
+    :path: "../node_modules/@react-native-community/masked-view"
+  RNGestureHandler:
+    :path: "../node_modules/react-native-gesture-handler"
   RNPermissions:
     :path: "../node_modules/react-native-permissions"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   RNSound:
     :path: "../node_modules/react-native-sound"
   toolbar-android:
@@ -502,6 +522,7 @@ SPEC CHECKSUMS:
   React-jsinspector: fc661eff8edbfb7e22119382c13f33bcadde0f3c
   react-native-a2dp: 35c0be2e979af57af7d77cbf35eaeba32a2f5856
   react-native-bluetooth-status: b1fb68e6158b3ef3886187dbc108b585870ff9aa
+  react-native-safe-area-context: 4c3249e4840225c61fcd215b136af0a737bccb79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: aadd91a1d6cbfae50dd41f140004f816e9e47ade
   React-RCTAnimation: 7fa2ef6c0ef1e3f0b7d2261c827ec94412deb5e6
@@ -515,7 +536,10 @@ SPEC CHECKSUMS:
   ReactCommon: f63556ee9e41e9802257228237e5e660451a03cf
   ReactNativeExceptionHandler: 8025d98049c25f186835a3af732dd7c9974d6dce
   RNAudio: ee3c54993b8aed4b23d70fdfc75141c4d43330d5
+  RNCMaskedView: f5c7d14d6847b7b44853f7acb6284c1da30a3459
+  RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNPermissions: 1888705aebcc81714efa5dbff94351e4388ae012
+  RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   RNSound: c980916b596cc15c8dcd2f6ecd3b13c4881dbe20
   toolbar-android: 404f4450b203597e7b417f714ff417bed562a1be
   Yoga: 7d2edc5b410474191962e6dee88ee67f9b328b6b
@@ -523,4 +547,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: f21b86ad59fbb02ef7fb4c684dd0a22fba5cb782
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.8.4
