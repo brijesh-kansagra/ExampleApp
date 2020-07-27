@@ -70,22 +70,22 @@ export default class Animation_Screen extends Component {
     };
     componentDidMount() {
         var newarray = []
-        for (let index = 0; index < 30; index++) {
-            var dict = {
-                id : index
-            }
-            newarray.push(dict)
-            console.log("element" , index)
-            // this.state.DATA.push(id:index)
-        }
+        // for (let index = 0; index < 30; index++) {
+        //     var dict = {
+        //         id : index
+        //     }
+        //     newarray.push(dict)
+        //     console.log("element" , index)
+        //     // this.state.DATA.push(id:index)
+        // }
         this.setState ({
             flatArrat : newarray
         })
-        for (let index = 0; index < this.state.flatArrat; index++) {
-            const element = this.state.flatArrat[index];
-            console.log("Get inder" , element.id)
+        // for (let index = 0; index < this.state.flatArrat; index++) {
+        //     const element = this.state.flatArrat[index];
+        //     console.log("Get inder" , element.id)
             
-        }
+        // }
     }
     Go_Score() {
         this.props.navigation.navigate('Score_Screen')
@@ -107,7 +107,7 @@ export default class Animation_Screen extends Component {
         const {
             flatArrat
         } = this.setState;
-        console.log("Flattttt" , this.state.flatArrat.length)
+       // console.log("Flattttt" , this.state.flatArrat.length)
         return (
             <View style={Styles.container}>
                 <StatusBar barStyle="light-content" />
