@@ -1,145 +1,163 @@
-
-import React, { Component } from 'react';
+import React from 'react';
 import {
-    SafeAreaView,
-    StyleSheet,
-    ScrollView,
-    View,
+    NativeModules,
+    LayoutAnimation,
     Text,
-    StatusBar,
-    ImageBackground,
-    Image,
     TouchableOpacity,
-    FlatList
+    StyleSheet,
+    View,
+    Animated,
+    Image
 } from 'react-native';
 
-import COLORS from '../Resources/Colors';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import AnimatableProgressBar from '../Resources/AnimatableProgressBar';
+const I_RoundButton = '../Images/Fountain.png'
 
-const I_BackgroundImage = '../Images/Background/BackGroudSCR.png'
-const I_RoundedBG = '../Images/Rounded_BG_Shape/Rounded_BG_Shape.png'
-const I_Logo_H = '../Images/Logo_Himalaya/Logo_Himalaya.png'
-const I_Logo_Splash = '../Images/Colorfull_Splash/Colorfull_Splash.png'
-const I_Fountain1 = '../Images/Fountain1/Fountain1.png'
-const I_Fountain2 = '../Images/Fountain2/Fountain2.png'
-const I_Fountain3 = '../Images/Fountain3/Fountain3.png'
-const I_Connect_Fountain = '../Images/Connect_Fountain/Connect_Fountain.png'
-const DATA = [
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-    {
-        id: 3,
-    }, {
-        id: 3,
-    },
-    {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-    {
-        id: 3,
-    }, {
-        id: 3,
-    }, {
-        id: 1,
-    },
-    {
-        id: 2,
-    },
-    {
-        id: 3,
-    }, {
-        id: 3,
-    }
-]
-export default class Animation_Screen extends Component {
-
+export default class Animation_Screen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            count: 5,
-            flatArrat: [],
+            TotalLeagth: 40,
+            imageLeanght:11,
+            minCount: 5,
+            maxCount: 15,
+            arrView: [],
+            arrImage: [],
+            imgmax:5,
+            imgmax1:8,
+            imgMin :2,
+            isonPress: false
         };
 
     };
-    componentDidMount() {
-        var newarray = []
-        // for (let index = 0; index < 30; index++) {
-        //     var dict = {
-        //         id : index
-        //     }
-        //     newarray.push(dict)
-        //     console.log("element" , index)
-        //     // this.state.DATA.push(id:index)
-        // }
-        this.setState ({
-            flatArrat : newarray
-        })
-        // for (let index = 0; index < this.state.flatArrat; index++) {
-        //     const element = this.state.flatArrat[index];
-        //     console.log("Get inder" , element.id)
-            
-        // }
-    }
-    Go_Score() {
-        this.props.navigation.navigate('Score_Screen')
-    }
-    renderRow = ({ item, index }) => {
+   
+   
 
-        return (
-            <View>
-                <View style={{ height: 5, paddingTop: 2 }}>
-                    <View style={{ height: 3, backgroundColor: (this.state.count < index) ? COLORS.sky : COLORS.white }}>
-        <Text style = {{color:COLORS.white}}>{item.id}</Text>
-                    </View>
-                </View>
-            </View>
-
-        )
+    componentDidMount()
+    {
     }
+    baranimation() {
+        
+
+        this.state.arrView = []
+       
+        for (var i = 0; i < this.state.TotalLeagth; i++) {
+            if (this.state.minCount < i && this.state.maxCount > i && this.state.isonPress == true) {
+                console.log("pinkkk")
+                this.state.arrView.push(<View style={{
+                    backgroundColor: 'red', height: 5,
+                    width: '100%', marginTop: 2
+                }} />)
+            } else if (this.state.maxCount < i && this.state.isonPress == true) {
+                console.log("res")
+                this.state.arrView.push(<View style={{
+                    backgroundColor: '#EB4FD0', height: 5,
+                    width: '100%', marginTop: 2
+                }} />)
+            }
+            else {
+                this.state.arrView.push(<View style={{
+                    backgroundColor: 'gray', height: 5,
+                    width: '100%', marginTop: 2
+                }} />)
+
+            }
+        }
+        return this.state.arrView
+
+    }
+    barimage() {
+        
+
+        this.state.arrImage = []
+       
+        for (var i = 0; i < this.state.imageLeanght; i++) {
+            if (this.state.imgMin <= i && this.state.imgmax >= i) {
+                console.log("pinkkk")
+                this.state.arrImage.push(<Image style ={{tintColor:this.state.isonPress == true ?'#70A9EE' :'pink' , height:45 , width:55 , resizeMode:'contain'}} source = {require(I_RoundButton)}/>)
+
+            } else if (this.state.imgmax <= i && this.state.imgmax1 >= i  ) {
+                console.log("res")
+                this.state.arrImage.push(<Image style ={{tintColor:this.state.isonPress == true ?'#BB71E0' :'pink' , height:55 , width:65 ,resizeMode:'contain'}} source = {require(I_RoundButton)}/>)
+
+            }else if (this.state.imgmax1 <= i ) {
+                console.log("res")
+                this.state.arrImage.push(<Image style ={{tintColor:this.state.isonPress == true ?'#EB51DA' :'pink' , height:55 , width:65 ,resizeMode:'contain'}} source = {require(I_RoundButton)}/>)
+
+            }
+            else {
+                this.state.arrImage.push(<Image style ={{tintColor:this.state.isonPress == true ?'#6CF8FB' :'pink' , height:35 , width:45 ,resizeMode:'contain'}} source = {require(I_RoundButton)}/>)
+           }
+
+        }
+        
+        return  this.state.arrImage
+    }
+
     render() {
-        const {
-            flatArrat
-        } = this.setState;
-       // console.log("Flattttt" , this.state.flatArrat.length)
+
+       
         return (
-            <View style={Styles.container}>
-                <StatusBar barStyle="light-content" />
-                <ImageBackground style={Styles.Main_Back} source={require(I_BackgroundImage)} >
-                    <View style={{
-                        // backgroundColor: COLORS.red, justifyContent: 'center',
-                        alignItems: 'center', height: 500
-                    }}>
-                        <FlatList style={{ width: 50 }}
-                            data={flatArrat}
-                            renderItem={this.renderRow}
-                            keyExtractor={item => item.id}
-                        />
-                    </View>
-                </ImageBackground>
+            <View style={styles.container}>
+                
+                <TouchableOpacity style={{ height: 60 }} onPress={() => this.setState({ minCount: 5, maxCount: 25, isonPress: true })} >
+                    <Text> add animation </Text>
+                </TouchableOpacity>
+                {/* <AnimatableProgressBar
+          current={100}
+          maximum={150}
+          width={600}
+          borderColor='white'
+          height={50}
+          borderRadius={30}
+          borderWidth={2}
+          minimum={20}
+          backgroundColor='red'
+          type="increase"
+          lineBackgroundColor='gray'
+          textColor='white'
+          interval={800}
+          
+        /> */}
+        <View style ={{flexDirection:'row'}}>
+                {/* <View style={{ height: 100, width: 40,right:50 }}>
+                    {
+                        this.baranimation()
+                    }
+                </View> */}
+                <View>
+                    {
+                        this.barimage()
+                    }
+                </View>
+                                {/* //<Image style ={{height: 40, width: 40 , tintColor:'blue' }} source = {require(I_RoundButton)} ></Image> */}
 
             </View>
-        )
-
+            </View>
+        );
     }
 }
 
-export const Styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
-
-    },
-    Main_Back: {
-        width: '100%',
-        height: '100%',
-        flex: 1,
+        alignItems: 'center',
         justifyContent: 'center',
-        alignItems: 'center'
+        backgroundColor: 'green'
     },
-})
+    box: {
+        width: 200,
+        height: 200,
+        backgroundColor: 'red',
+    },
+    button: {
+        backgroundColor: 'black',
+        paddingHorizontal: 20,
+        paddingVertical: 15,
+        marginTop: 15,
+    },
+    buttonText: {
+        color: '#fff',
+        fontWeight: 'bold',
+    },
+});

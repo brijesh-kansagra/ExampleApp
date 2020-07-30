@@ -9,6 +9,7 @@ import Select_Fountain_Screen from '../Screens/Select_Fountain/Select_Fountain_S
 import Score_Screen from '../Screens/Score_Share/Score_Screen';
 import Start_Record_Screen from '../Screens/Start_Record/Start_Record_Screen';
 import Animation_Screen from '../Screens/Animation_Screen';
+import SplashScreen from '../Screens/Splash';
 
 
 const Stack = createStackNavigator();
@@ -19,7 +20,7 @@ function Navigation_Stack() {
         <NavigationContainer>
          <Stack.Navigator
            headerMode="none"
-            initialRouteName="Bluetooth_connect_Screen"
+            initialRouteName="Splash"
             screenOptions={{
                  headerShown:true,
                 gestureEnabled: true,
@@ -31,6 +32,7 @@ function Navigation_Stack() {
                 // }
             }}
         >
+            <Stack.Screen name="Splash" component={SplashScreen}/>
             <Stack.Screen name="Bluetooth_connect_Screen" component={Bluetooth_connect_Screen} />
             {/* <Stack.Screen name="Bluetooth_connect_Screen" component={Bluetooth_connect_Screen} options={{ animationEnabled: false }} /> */}
             <Stack.Screen name="Select_Fountain_Screen" component={Select_Fountain_Screen} />
@@ -44,4 +46,3 @@ function Navigation_Stack() {
 }
 
 export default Navigation_Stack;
-

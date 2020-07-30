@@ -18,7 +18,6 @@ export const Styles = StyleSheet.create({
         height: '100%',
     },
     View_Header: {
-        //   backgroundColor:COLORS.white,
         paddingHorizontal: 30,
         paddingVertical: 30,
         flexDirection: 'row',
@@ -39,16 +38,18 @@ export const Styles = StyleSheet.create({
         color: COLORS.txtGray
     },
     imgMik: {
-        width: width * 0.42,
-        height: height * 0.58,
+        width: width * 0.46,
+        height: height * 0.55,
         resizeMode:'stretch',
-        //bottom:0,
+        //paddingBottom:50,
+        //flex:1,
        // position:'absolute'
     },
     Img_SecBG: {
         width:80,
         height:80 ,
-        alignSelf:'center'
+        top:0,
+        alignSelf:'center',
     },
     txtHeader1: {
         fontSize: 22,
@@ -75,7 +76,7 @@ export const Styles = StyleSheet.create({
     ViewBottom: {
         // backgroundColor:COLORS.white,
         position: 'absolute',
-        bottom: -18,
+        bottom: -22,
         justifyContent: 'center',
         alignSelf: 'center',
         width: width * 0.95,
@@ -93,21 +94,20 @@ export const Styles = StyleSheet.create({
         fontStyle: 'normal',
         alignSelf: 'center',
         color: COLORS.white,
-        position: 'absolute',
     },
     ViewCenter: {
         width:'100%',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        bottom: 20,
+        top:height * 0.25,
         position:'absolute',
-        bottom: 10,
         paddingHorizontal: 10,
-        alignSelf:'center',
-     //   backgroundColor: COLORS.white
+       
     },
     ViewSubCenter: {
         flexDirection: 'column',
-        justifyContent:'space-between',
+       // justifyContent:'',
       //  backgroundColor:COLORS.sky,
     }
 
