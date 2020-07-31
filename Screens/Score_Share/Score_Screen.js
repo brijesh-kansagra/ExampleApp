@@ -3,10 +3,10 @@ import React, { Component } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
-  ScrollView,
+  BackHandler,
   View,
   Text,
-  StatusBar,
+  Share,
   ImageBackground,
   Image,
   TouchableOpacity
@@ -41,8 +41,21 @@ export default class Score_Screen extends Component {
     };
 
   };
-  Go_Start_Record() {
+  Try_Again() {
     this.props.navigation.navigate('Start_Record_Screen')
+  }
+  Close_App() {
+    BackHandler.exitApp();
+  }
+  async Share_With_Your_Friends() {
+    try {
+      const result = await Share.share({
+        message: 'Try Example App. AppLink: https://play.google.com/store/apps/details?id=com.exampleapp'
+      });
+      console.log('sharing result ',result)
+    } catch (error) {
+      console.log('error while sharing', error);
+    }
   }
   barimage() {
 
@@ -51,15 +64,12 @@ export default class Score_Screen extends Component {
 
     for (var i = 0; i < this.state.imageLeanght; i++) {
       if (this.state.imgMin <= i && this.state.imgmax >= i) {
-        console.log("pinkkk")
         this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#70A9EE' : '#24192A', height: 45, width: 55, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} />)
 
       } else if (this.state.imgmax <= i && this.state.imgmax1 >= i) {
-        console.log("res")
         this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#BB71E0' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} />)
 
       } else if (this.state.imgmax1 <= i) {
-        console.log("res")
         this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#EB51DA' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center' }} source={require(I_animationBG)} />)
       }
       else {
@@ -89,7 +99,7 @@ export default class Score_Screen extends Component {
                 </View>
               </View>
               <View style={Styles.view_Share}>
-                <TouchableOpacity onPress ={() => this.Go_Start_Record()}>
+                <TouchableOpacity onPress ={() => this.Share_With_Your_Friends()}>
                   <ImageBackground style={Styles.img_Share_Back} source={require(I_Share_Back)}>
                     <Image style={Styles.img_Share_icon} source={require(I_share)}></Image>
                   </ImageBackground>
@@ -105,7 +115,7 @@ export default class Score_Screen extends Component {
 
           <View style={Styles.View_Bottom}>
             <View>
-              <TouchableOpacity style={Styles.btn_bottom} >
+              <TouchableOpacity style={Styles.btn_bottom} onPress ={() => this.Try_Again()}>
                 <ImageBackground style={Styles.img_Bottom_BG} source={require(I_Try_Again_BG)}>
                   <View style={Styles.View_Bottom1}>
                     <Image style={Styles.img_Bottom_icon} source={require(I_Try_Again_Icon)}></Image>
@@ -115,11 +125,11 @@ export default class Score_Screen extends Component {
               </TouchableOpacity>
             </View>
             <View >
-              <TouchableOpacity style={Styles.btn_bottom} >
+              <TouchableOpacity style={Styles.btn_bottom} onPress ={() => this.Close_App()}>
                 <ImageBackground style={Styles.img_Bottom_BG} source={require(I_Close_BG)}>
                   <View style={Styles.View_Bottom1}>
                     <Image style={Styles.img_Bottom_icon} source={require(I_Close_Icon)}></Image>
-                    <Text style={Styles.txtBottombtn}>TRY AGAIN</Text>
+                    <Text style={Styles.txtBottombtn}>CLOSE APP</Text>
                   </View>
                 </ImageBackground>
               </TouchableOpacity>

@@ -6,11 +6,15 @@ import {
   ScrollView,
   View,
   Text,
-  StatusBar,
+  AppState,
   ImageBackground,
   Image,
   TouchableOpacity
 } from 'react-native';
+import Permissions from 'react-native-permissions';
+import { BluetoothStatus } from 'react-native-bluetooth-status'
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
+
 import COLORS from '../../Resources/Colors';
 
 import { Styles } from './Bluetooth_connect_Styles.js'
@@ -19,17 +23,145 @@ const I_RoundedBG = '../../Images/Rounded_BG_Shape/Rounded_BG_Shape.png'
 const I_Logo_H = '../../Images/Logo_Himalaya/Logo_Himalaya.png'
 const I_Bluetooth = '../../Images/Bluetooth/Bluetooth.png'
 const I_RoundButton = '../../Images/RoundButton/RoundButton.png'
+
 export default class Bluetooth_connect_Screen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      bluetoothState: '',
+      appState: AppState.currentState,
+      oprMessage: 'Bluetooth is On',
+      devices: []
     };
-
   };
-  Go_Bluetooth_Connect() {
-    this.props.navigation.navigate('Select_Fountain_Screen')
+
+  scan = async () => {
+    this.setState({ oprMessage: 'Scanning Fountains...'});
+    console.log("Scanning devices");
+    try {
+        await RNBluetoothClassic.discoverDevices().then((deviceList) => {
+            console.log("Scanning completed. Devices : ", deviceList);
+            this.setState({ devices: deviceList});
+        }).catch( (error) => {
+            console.log("Error in Scanning devices Error "+error);
+        });
+    } catch (error) {
+        console.log("Error scanning devices: "+error);
+    }
   }
+  async Go_Select_Fountain_Screen() {
+    await this.scan();
+    this.props.navigation.navigate('Select_Fountain_Screen', { devices: this.state.devices})
+  }
+  Go_Bluetooth_Connect() {
+    this.toggleBluetooth();
+    this.Go_Select_Fountain_Screen();
+  }
+  requestBluetoothAuthorization = async () => {
+    if (Platform.OS === 'android') {
+      const p = await Permissions.request(Permissions.PERMISSIONS.ANDROID.BLUETOOTH_ADMIN);
+      console.log('bluetooth permission request', p);
+      return p;
+    }
+  }
+
+  checkBluetoothAuthorizationStatus = async () => {
+    if (Platform.OS === 'android') {
+      const p = await Permissions.check(Permissions.PERMISSIONS.ANDROID.BLUETOOTH_ADMIN);
+      console.log('bluetooth admin permission check', p);
+      if (p === Permissions.RESULTS.GRANTED) {      
+        return p;
+      }
+      return this.requestBluetoothAuthorization();
+    }
+  }
+
+  requestLocationPermissionStatus = async () => {
+    if (Platform.OS === 'android') {
+      const p = await Permissions.request(Permissions.PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      console.log('bluetooth location permission request', p);
+      return p;
+    }
+  }
+
+  checkLocationPermissionStatus = async () => {
+    if (Platform.OS === 'android') {
+      const p = await Permissions.check(Permissions.PERMISSIONS.ANDROID.ACCESS_COARSE_LOCATION);
+      console.log('bluetooth location permission check', p);
+      if (p === Permissions.RESULTS.GRANTED) {      
+        return p;
+      }
+      return this.requestLocationPermissionStatus();
+    }
+  }
+
+  async componentDidMount() {
+    await this.checkLocationPermissionStatus();
+    await this.checkBluetoothAuthorizationStatus();
+    if(this.ios()){
+      AppState.addEventListener('change', (nextAppState) => this._handleAppStateChange(nextAppState));
+    }
+    await this.checkInitialBluetoothState();
+    console.log('Bluetooth is '+this.state.bluetoothState);
+    if (!(this.ios()) &&  this.state.bluetoothState === 'On'){
+      this.Go_Select_Fountain_Screen();
+    }
+  }
+
+  _handleAppStateChange = (nextAppState) => {
+    if(this.ios()){
+      if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+        this.updateBluetoothStatus();
+      }
+      this.setState({ appState: nextAppState });
+    }
+  };
+
+   updateBluetoothStatus = async () => {
+    if(this.ios()){
+    return new Promise(async (resolve, reject) => {
+        try {
+          const isEnabled = await BluetoothStatus.state();
+          this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off'});
+          resolve(isEnabled);
+        } catch (error) { reject(error) }
+      });
+    }
+  }
+
+  checkInitialBluetoothState = async () => {
+    if(this.ios()){
+      const isEnabled = await this.updateBluetoothStatus();
+      if (!isEnabled) {
+        this.requireBluetooth();
+      }
+    }else{
+      const isEnabled = await BluetoothStatus.state();
+      this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off'});
+    }
+  }
+
+  requireBluetooth = () => {
+    if(this.ios()){
+      console.log("Open bluetooth setting");
+    }
+  }
+
+  ios = () => {
+    return Platform.OS === 'ios';
+  }
+
+  async toggleBluetooth() {
+    if(!this.ios()){
+      try {
+        const isEnabled = await BluetoothStatus.state();
+        BluetoothStatus.enable(!isEnabled);
+        this.setState({ bluetoothState: (isEnabled) ? 'Off' : 'On'});
+        this.props.onPress(!isEnabled);
+      } catch (error) { console.error(error); }
+    }
+  }
+
   render() {
 
     return (
@@ -37,6 +169,7 @@ export default class Bluetooth_connect_Screen extends Component {
         <ImageBackground style={Styles.Main_Back} source={require(I_BackgroundImage)} >
           <View style={Styles.Main_View} >
             <ImageBackground style={Styles.Main_ImgView} source={require(I_RoundedBG)} >
+              {!(this.ios()) && this.state.bluetoothState === 'Off'? 
               <View style={Styles.View_One}>
                 <View >
                   <View style={Styles.View_Two}>
@@ -57,7 +190,18 @@ export default class Bluetooth_connect_Screen extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              
+              : 
+              <View style={Styles.View_One}>
+                <View >
+                  <View style={Styles.View_Two}>
+                    <Image style={{ alignSelf: 'center' }} source={require(I_Bluetooth)}></Image>
+                  </View>
+                </View>
+                <View style={Styles.View_Three}>
+                  <Text style={Styles.txtBluetooth}>{this.state.oprMessage}</Text>
+                </View>
+              </View>
+              }
             </ImageBackground>
           </View>
           <View style={Styles.View_Fifth}>

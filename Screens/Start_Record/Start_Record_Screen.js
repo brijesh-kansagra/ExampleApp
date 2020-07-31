@@ -11,6 +11,7 @@ import {
   Image,
   TouchableOpacity
 } from 'react-native';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 import { Styles } from './Start_Record_Style.js';
 import COLORS from '../../Resources/Colors';
@@ -41,11 +42,147 @@ export default class Start_Record_Screen extends Component {
       imgmax: 5,
       imgmax1: 8,
       imgMin: 2,
+      recordingMessage: 'START',
+      currentTime: 0.0,
+      recording: false,
+      paused: false,
+      stoppedRecording: false,
+      finished: false,
+      audioPath: AudioUtils.DocumentDirectoryPath + '/test.aac',
+      hasPermission: undefined,
+      frequency: 0,
+      fountainHeight: 0,
+      timer: 30
     };
 
   };
+
+  prepareRecordingPath(audioPath){
+    AudioRecorder.prepareRecordingAtPath(audioPath, {
+      SampleRate: 22050,
+      Channels: 1,
+      AudioQuality: "Low",
+      AudioEncoding: "aac",
+      AudioEncodingBitRate: 32000,
+      MeteringEnabled: true
+    });
+  }
+
+  async componentDidMount() {
+    AudioRecorder.requestAuthorization().then((isAuthorised) => {
+      this.setState({ hasPermission: isAuthorised });
+      console.log('Audio Permission : ', isAuthorised);
+
+      if (!isAuthorised) return;
+      console.log('Preparing for recording.');
+      this.prepareRecordingPath(this.state.audioPath);
+
+      AudioRecorder.onProgress = (data) => {
+        this.setState({currentTime: Math.floor(data.currentTime)});
+        console.log('currentMetering '+ data.currentMetering+ ' ,Decibel '+data.valueInDB)
+        this.setState({frequency: data.valueInDB});
+      };
+
+      AudioRecorder.onFinished = (data) => {
+        // Android callback comes in the form of a promise instead.
+        if (Platform.OS === 'ios') {
+          this._finishRecording(data.status === "OK", data.audioFileURL, data.audioFileSize);
+        }
+      };
+    });
+  }
+  decrementTimer = () => {
+    this.setState((prevstate) => ({ timer: prevstate.timer-1 }));
+  };
+
+  async _stop() {
+    if (!this.state.recording) {
+      console.warn('Can\'t stop, not recording!');
+      return;
+    }
+    clearInterval(this.countDown);
+    this.setState({stoppedRecording: true, recording: false, paused: false, fountainHeight:0 });
+    this.setState({ minCount: 5, maxCount: 25, isonPress: false, recordingMessage: 'START', timer:30 });
+    
+    try {
+      const filePath = await AudioRecorder.stopRecording();
+      console.log('recording stopped. File available at ',filePath);
+      if (Platform.OS === 'android') {
+        this._finishRecording(true, filePath);
+      }
+      this.setState({frequency: 0 });
+      this.Go_Score();
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async _record() {
+
+    if (this.state.recording) {
+      console.warn('Already recording!');
+      return;
+    }
+
+    if (!this.state.hasPermission) {
+      console.warn('Can\'t record, no permission granted!');
+      return;
+    }
+
+    if(this.state.stoppedRecording){
+      this.prepareRecordingPath(this.state.audioPath);
+    }
+    this.setState({ minCount: 5, maxCount: 25, isonPress: true, recordingMessage: 'Recording' });
+    this.setState({recording: true, paused: false});
+
+    try {
+      const filePath = await AudioRecorder.startRecording();
+      console.log('recording started. File created at ',filePath);
+    } catch (error) {
+      console.error(error);
+    }
+
+    this.countDown = setInterval(() => {
+      this.decrementTimer();
+    }, 1000);
+
+    setTimeout(async () => {
+      await this._stop();
+    },30000);
+  }
+
+  _finishRecording(didSucceed, filePath, fileSize) {
+    this.setState({ finished: didSucceed });
+    console.log(`Finished recording of duration ${this.state.currentTime} seconds at path: ${filePath} and size of ${fileSize || 0} bytes`);
+  }
+
+  async _play() {
+    if (this.state.recording) {
+      await this._stop();
+    }
+    // These timeouts are a hacky workaround for some issues with react-native-sound.
+    // See https://github.com/zmxv/react-native-sound/issues/89.
+    setTimeout(() => {
+      var sound = new Sound(this.state.audioPath, '', (error) => {
+        if (error) {
+          console.log('failed to load the sound', error);
+        }
+      });
+
+      setTimeout(() => {
+        sound.play((success) => {
+          if (success) {
+            console.log('successfully finished playing');
+          } else {
+            console.log('playback failed due to audio decoding errors');
+          }
+        });
+      }, 100);
+    }, 100);
+  }
+
   Go_Score() {
-    this.props.navigation.navigate('Start_Record_Screen')
+    this.props.navigation.navigate('Score_Screen')
   }
   baranimation() {
     this.state.arrView = []
@@ -93,14 +230,14 @@ export default class Start_Record_Screen extends Component {
               <Image source={require(I_Heught_BG)}></Image>
               <View style={Styles.HeaderViewText}>
                 <Text style={Styles.txtHeader}>Height</Text>
-                <Text style={Styles.txtHeader1}>156CM</Text>
+                <Text style={Styles.txtHeader1}>{this.state.fountainHeight}CM</Text>
               </View>
             </View>
             <View>
               <Image source={require(I_Heught_BG)}></Image>
               <View style={Styles.HeaderViewText}>
                 <Text style={Styles.txtHeader}>Frequency</Text>
-                <Text style={Styles.txtHeader1}>+150DB</Text>
+                  <Text style={Styles.txtHeader1}>{this.state.frequency}DB</Text>
               </View>
             </View>
           </View>
@@ -113,7 +250,7 @@ export default class Start_Record_Screen extends Component {
             <View style={Styles.ViewSubCenter} >
               <View style={{ justifyContent: 'center' }} >
                 <Image style={Styles.Img_SecBG} source={require(I_SecondCount)} />
-                <Text style={Styles.txtSEC}>30
+                <Text style={Styles.txtSEC}>{this.state.timer}
                 <Text style={Styles.txtSEC1}> SEC</Text>
                 </Text>
               </View>
@@ -133,8 +270,8 @@ export default class Start_Record_Screen extends Component {
 
           <View style={Styles.ViewBottom}>
             <Image style={Styles.imeBottom} source={require(I_Round_BG1)}></Image>
-            <TouchableOpacity style={{ bottom: 10, height: 100, alignItems: 'center', width: 160, position: 'absolute', alignSelf: 'center' }} onPress={() => this.setState({ minCount: 5, maxCount: 25, isonPress: true })} >
-              <Text style={Styles.txtBottom}>START</Text>
+            <TouchableOpacity style={{ bottom: 10, height: 100, alignItems: 'center', width: 160, position: 'absolute', alignSelf: 'center' }} onPress={() => this._record()} >
+              <Text style={Styles.txtBottom}>{this.state.recordingMessage}</Text>
             </TouchableOpacity>
           </View>
         </ImageBackground>

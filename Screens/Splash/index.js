@@ -9,7 +9,6 @@ class SplashScreen extends Component {
   }
 
   componentDidMount(){
-    console.log("dsdsdsd")
       this.tick()    
   }
   tick =() => {
