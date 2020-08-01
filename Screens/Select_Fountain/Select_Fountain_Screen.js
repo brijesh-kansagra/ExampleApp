@@ -108,7 +108,7 @@ export default class Select_Fountain_Screen extends Component {
                   devices.map((item, i) => (
                     <TouchableOpacity key={'to'+item.id} style ={{justifyContent:"center" , justifyContent:'center'}} onPress={() => this.selectDevice(item)}>
                       <View key={'v'+item.id} style={Styles.View_Fountain}>
-                        <Image key={'i'+item.id} source={require(I_Fountain2)} onp></Image>
+                        <Image key={'i'+item.id} source={i%2===0?require(I_Fountain1):require(I_Fountain2)} onp></Image>
                         <Text key={'t'+item.id} style={Styles.txt_Fountain_2}>{item.name}</Text>
                       </View>
                     </TouchableOpacity>
