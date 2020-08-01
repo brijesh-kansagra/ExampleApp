@@ -14,6 +14,7 @@ import {
   TouchableHighlight
 } from 'react-native';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
+import {AudioRecorder, AudioUtils} from 'react-native-audio';
 
 import { Styles } from './Select_Fountain_Styles.js';
 import COLORS from '../../Resources/Colors';
@@ -44,7 +45,7 @@ export default class Select_Fountain_Screen extends Component {
     this.setState({ connecting: 'Connecting...'});
     try {
         await RNBluetoothClassic.connect(this.state.deviceToConnect.id).then((connectedDevice) => {
-            console.log("Connected to the device: "+this.state.deviceToConnect.id+" , status: "+{connectedDevice});
+            console.log("Connected to the device: "+this.state.deviceToConnect.name+" , status: "+{connectedDevice});
             console.log("Starting bluetooth streaming");
             AudioRecorder.startBluetoothSco().then( () => {
                 console.log("Started bluetooth streaming");
@@ -53,7 +54,7 @@ export default class Select_Fountain_Screen extends Component {
                 console.log("Error starting bluetooth streaming");
             });
         }).catch( (error) => {
-            console.log("Error connecting device "+this.state.deviceToConnect.id+ " Error "+error);
+            console.log("Error connecting device "+this.state.deviceToConnect.name+ " Error "+error);
         });
     }catch (error){
         console.log("Error connecting device: "+error);

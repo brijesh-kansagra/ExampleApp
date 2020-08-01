@@ -1,5 +1,5 @@
 
-import React, { Component } from 'react';
+import React, { Component, Promise } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -31,7 +31,8 @@ export default class Bluetooth_connect_Screen extends Component {
       bluetoothState: '',
       appState: AppState.currentState,
       oprMessage: 'Bluetooth is On',
-      devices: []
+      devices: [],
+      showBluetoothOnOff : false
     };
   };
 
@@ -53,9 +54,12 @@ export default class Bluetooth_connect_Screen extends Component {
     await this.scan();
     this.props.navigation.navigate('Select_Fountain_Screen', { devices: this.state.devices})
   }
-  Go_Bluetooth_Connect() {
-    this.toggleBluetooth();
-    this.Go_Select_Fountain_Screen();
+  async Go_Bluetooth_Connect() {
+    await this.turnOnBluetooth();
+    setTimeout(async () => {
+      await this.checkBluetoothState();
+      this.Go_Select_Fountain_Screen();
+    }, 2000);
   }
   requestBluetoothAuthorization = async () => {
     if (Platform.OS === 'android') {
@@ -122,7 +126,7 @@ export default class Bluetooth_connect_Screen extends Component {
     return new Promise(async (resolve, reject) => {
         try {
           const isEnabled = await BluetoothStatus.state();
-          this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off'});
+          this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off', showBluetoothOnOff : isEnabled});
           resolve(isEnabled);
         } catch (error) { reject(error) }
       });
@@ -137,7 +141,7 @@ export default class Bluetooth_connect_Screen extends Component {
       }
     }else{
       const isEnabled = await BluetoothStatus.state();
-      this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off'});
+      this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off', showBluetoothOnOff : isEnabled});
     }
   }
 
@@ -151,13 +155,21 @@ export default class Bluetooth_connect_Screen extends Component {
     return Platform.OS === 'ios';
   }
 
-  async toggleBluetooth() {
+  async turnOnBluetooth() {
+    if(!this.ios()){
+      try {
+        console.log('Turning on Bluetooth');
+        await BluetoothStatus.enable();
+      } catch (error) { console.error(error); }
+    }
+  }
+
+  async checkBluetoothState() {
     if(!this.ios()){
       try {
         const isEnabled = await BluetoothStatus.state();
-        BluetoothStatus.enable(!isEnabled);
-        this.setState({ bluetoothState: (isEnabled) ? 'Off' : 'On'});
-        this.props.onPress(!isEnabled);
+        console.log('Bluetooth status ', isEnabled)
+        this.setState({ bluetoothState: (isEnabled) ? 'On' : 'Off', showBluetoothOnOff : isEnabled});
       } catch (error) { console.error(error); }
     }
   }
@@ -169,7 +181,7 @@ export default class Bluetooth_connect_Screen extends Component {
         <ImageBackground style={Styles.Main_Back} source={require(I_BackgroundImage)} >
           <View style={Styles.Main_View} >
             <ImageBackground style={Styles.Main_ImgView} source={require(I_RoundedBG)} >
-              {!(this.ios()) && this.state.bluetoothState === 'Off'? 
+              {!(this.ios()) && !this.state.showBluetoothOnOff && 
               <View style={Styles.View_One}>
                 <View >
                   <View style={Styles.View_Two}>
@@ -190,8 +202,8 @@ export default class Bluetooth_connect_Screen extends Component {
                   </TouchableOpacity>
                 </View>
               </View>
-              : 
-              <View style={Styles.View_One}>
+              }{ !(this.ios()) && this.state.showBluetoothOnOff &&
+              <View style={Styles.View_One} >
                 <View >
                   <View style={Styles.View_Two}>
                     <Image style={{ alignSelf: 'center' }} source={require(I_Bluetooth)}></Image>

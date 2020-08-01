@@ -12,6 +12,7 @@ import {
   TouchableOpacity
 } from 'react-native';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
+import Sound from 'react-native-sound';
 
 import { Styles } from './Start_Record_Style.js';
 import COLORS from '../../Resources/Colors';
@@ -111,7 +112,9 @@ export default class Start_Record_Screen extends Component {
         this._finishRecording(true, filePath);
       }
       this.setState({frequency: 0 });
-      this.Go_Score();
+      console.log('playing the recording..');
+      this.setState({ recordingMessage: 'Playing'});
+      await this._play();
     } catch (error) {
       console.error(error);
     }
@@ -173,12 +176,14 @@ export default class Start_Record_Screen extends Component {
         sound.play((success) => {
           if (success) {
             console.log('successfully finished playing');
+            this.setState({ recordingMessage: 'START'});
+            this.Go_Score();
           } else {
             console.log('playback failed due to audio decoding errors');
           }
         });
-      }, 100);
-    }, 100);
+      }, 200);
+    }, 200);
   }
 
   Go_Score() {
