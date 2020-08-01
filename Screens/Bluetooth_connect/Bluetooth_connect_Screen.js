@@ -35,19 +35,61 @@ export default class Bluetooth_connect_Screen extends Component {
       showBluetoothOnOff : false
     };
   };
+  uniqueDevices = (deviceList) => {
+    let mymap = new Map(); 
+    deviceList.filter(el => { 
+      const val = mymap.get(el.id); 
+      if(val) { 
+          if(el.id < val) { 
+            console.log("Removing element "+el.id);
+            mymap.delete(el.id); 
+            mymap.set(el.id, el); 
+            console.log("Adding element "+el.id);
+              return true; 
+          } else { 
+              return false; 
+          } 
+      } 
+      mymap.set(el.id, el);
+      return true;
+    });
+    console.log("Final list: "+mymap.values());
+    return mymap.values();
+  }
 
   scan = async () => {
     this.setState({ oprMessage: 'Scanning Fountains...'});
-    console.log("Scanning devices");
+    console.log("Getting list of available paired devices");
     try {
-        await RNBluetoothClassic.discoverDevices().then((deviceList) => {
-            console.log("Scanning completed. Devices : ", deviceList);
-            this.setState({ devices: deviceList});
-        }).catch( (error) => {
-            console.log("Error in Scanning devices Error "+error);
-        });
+      await RNBluetoothClassic.list().then(async (pairedDeviceList) => {
+          console.log("List of available paired devices : ", pairedDeviceList);
+          if(pairedDeviceList.length > 0){
+            this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...pairedDeviceList]))});
+          }else{
+            this.setState({ devices: Array.from(this.uniqueDevices([...pairedDeviceList]))});
+          }
+
+          console.log("Scanning devices");
+          try {
+              await RNBluetoothClassic.discoverDevices().then((deviceList) => {
+                  console.log("Scanning completed. Devices : ", deviceList);
+                  if(deviceList.length > 0){
+                    this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...deviceList]))});
+                  }else{
+                    this.setState({ devices: Array.from(this.uniqueDevices([...deviceList]))});
+                  }
+              }).catch( (error) => {
+                  console.log("Error in Scanning devices Error "+error);
+              });
+          } catch (error) {
+              console.log("Error scanning devices: "+error);
+          }
+
+      }).catch( (error) => {
+          console.log("Error in listing available paired devices. Error "+error);
+      });
     } catch (error) {
-        console.log("Error scanning devices: "+error);
+        console.log("Error in listing available paired devices: "+error);
     }
   }
   async Go_Select_Fountain_Screen() {

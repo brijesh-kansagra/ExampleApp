@@ -183,7 +183,7 @@ export default class Start_Record_Screen extends Component {
           }
         });
       }, 200);
-    }, 200);
+    }, 100);
   }
 
   Go_Score() {
