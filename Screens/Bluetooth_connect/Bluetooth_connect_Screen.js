@@ -65,8 +65,6 @@ export default class Bluetooth_connect_Screen extends Component {
           console.log("List of available paired devices : ", pairedDeviceList);
           if(pairedDeviceList.length > 0){
             this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...pairedDeviceList]))});
-          }else{
-            this.setState({ devices: Array.from(this.uniqueDevices([...pairedDeviceList]))});
           }
 
           console.log("Scanning devices");
@@ -75,8 +73,6 @@ export default class Bluetooth_connect_Screen extends Component {
                   console.log("Scanning completed. Devices : ", deviceList);
                   if(deviceList.length > 0){
                     this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...deviceList]))});
-                  }else{
-                    this.setState({ devices: Array.from(this.uniqueDevices([...deviceList]))});
                   }
               }).catch( (error) => {
                   console.log("Error in Scanning devices Error "+error);

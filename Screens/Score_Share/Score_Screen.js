@@ -64,16 +64,16 @@ export default class Score_Screen extends Component {
 
     for (var i = 0; i < this.state.imageLeanght; i++) {
       if (this.state.imgMin <= i && this.state.imgmax >= i) {
-        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#70A9EE' : '#24192A', height: 45, width: 55, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} />)
+        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#70A9EE' : '#24192A', height: 45, width: 55, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} key ={i}/>)
 
       } else if (this.state.imgmax <= i && this.state.imgmax1 >= i) {
-        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#BB71E0' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} />)
+        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#BB71E0' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center'}} source={require(I_animationBG)} key ={i}/>)
 
       } else if (this.state.imgmax1 <= i) {
-        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#EB51DA' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center' }} source={require(I_animationBG)} />)
+        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#EB51DA' : '#24192A', height: 55, width: 65, resizeMode: 'contain' ,alignSelf:'center' }} source={require(I_animationBG)} key ={i}/>)
       }
       else {
-        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#6CF8FB' : '#24192A', height: 35, width: 45, resizeMode: 'contain' ,alignSelf:'center' }} source={require(I_animationBG)} />)
+        this.state.arrImage.push(<Image style={{ tintColor: this.state.isonPress == true ? '#6CF8FB' : '#24192A', height: 35, width: 45, resizeMode: 'contain' ,alignSelf:'center' }} source={require(I_animationBG)} key ={i}/>)
       }
 
     }

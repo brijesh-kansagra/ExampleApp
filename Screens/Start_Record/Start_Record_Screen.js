@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
 import Sound from 'react-native-sound';
+import RNBluetoothClassic from 'react-native-bluetooth-classic';
 
 import { Styles } from './Start_Record_Style.js';
 import COLORS from '../../Resources/Colors';
@@ -180,13 +181,27 @@ export default class Start_Record_Screen extends Component {
             this.Go_Score();
           } else {
             console.log('playback failed due to audio decoding errors');
+            this.setState({ recordingMessage: 'START'});
           }
         });
-      }, 200);
+      }, 300);
     }, 100);
   }
-
-  Go_Score() {
+  disconnect = async () => {
+    const { device } = this.props.route.params;
+    console.log("Disconnecting device: "+device.name);
+    console.log("Stopping bluetooth streaming");
+    await AudioRecorder.stopBluetoothSco().then( () => {
+        console.log("Stopped bluetooth streaming");    
+    }).catch( (error) => {
+        console.log("Error stopping bluetooth streaming "+error);    
+    });
+    await RNBluetoothClassic.disconnect();
+    console.log("Disconnected device: "+device.name);
+  }
+  async Go_Score() {
+    await this.disconnect();
+    console.log('Navigating to Score Screen');
     this.props.navigation.navigate('Score_Screen')
   }
   baranimation() {

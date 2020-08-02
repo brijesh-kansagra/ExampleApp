@@ -61,7 +61,7 @@ export default class Select_Fountain_Screen extends Component {
     }
   }
   Go_Start_Record() {
-    this.props.navigation.navigate('Start_Record_Screen')
+    this.props.navigation.navigate('Start_Record_Screen', { device: this.state.deviceToConnect})
   }
   selectDevice(fountain) {
     this.setState({ deviceToConnect: fountain});
