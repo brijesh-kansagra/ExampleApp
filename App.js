@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes, Share, Platform } from 'react-native';
+import { StyleSheet, View, Button, FlatList, Text, StatusBar, SafeAreaView, Alert, ImagePropTypes, Share, Platform, BackHandler } from 'react-native';
 
 import { setJSExceptionHandler, setNativeExceptionHandler } from 'react-native-exception-handler';
-// import AudioToDecible from './components/AudioToDecible';
-// import BluetoothA2DP from './components/BluetoothA2DP';
-// import BluetoothDevice from './components/BluetoothDevice';
-// import BluetoothController from './components/BluetoothController';
 import Spinner from 'react-native-loading-spinner-overlay';
 import SplashScreen from 'react-native-splash-screen'
 
@@ -17,6 +13,26 @@ export default function App() {
 
   useEffect(() => {
     SplashScreen.hide();
+
+    const backAction = () => {
+      Alert.alert("Exit", "Are you sure you want to exit?", [
+        {
+          text: "Cancel",
+          onPress: () => null,
+          style: "cancel"
+        },
+        { text: "YES", onPress: () => BackHandler.exitApp() }
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+
   }, []);
 
   const [enableSpinner,setEnableSpinner] = useState(false);
