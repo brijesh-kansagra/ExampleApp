@@ -11,7 +11,8 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  TouchableHighlight
+  TouchableHighlight,
+  Alert
 } from 'react-native';
 import RNBluetoothClassic from 'react-native-bluetooth-classic';
 import {AudioRecorder, AudioUtils} from 'react-native-audio';
@@ -54,7 +55,9 @@ export default class Select_Fountain_Screen extends Component {
                 console.log("Error starting bluetooth streaming");
             });
         }).catch( (error) => {
-            console.log("Error connecting device "+this.state.deviceToConnect.name+ " Error "+error);
+            console.log("Error connecting device "+this.state.deviceToConnect.name+ " "+error);
+            this.setState({ connecting: 'CONNECT TO FOUNTAIN'});
+            Alert.alert('Failed', 'Could not connect to '+ this.state.deviceToConnect.name);
         });
     }catch (error){
         console.log("Error connecting device: "+error);
@@ -64,7 +67,7 @@ export default class Select_Fountain_Screen extends Component {
     this.props.navigation.navigate('Start_Record_Screen', { device: this.state.deviceToConnect})
   }
   selectDevice(fountain) {
-    this.setState({ deviceToConnect: fountain});
+    this.setState({ deviceToConnect: fountain, connecting: 'Connect to \n'+fountain.name});
     console.log('selected fountain to connect ', fountain);
   }
 
@@ -117,7 +120,7 @@ export default class Select_Fountain_Screen extends Component {
                 }
                
               </View>
-              <View style={Styles.View_Connect_Fountain}>
+              <View style={Styles.View_Connect_Fountain} pointerEvents={(this.state.deviceToConnect === undefined) ? 'none' : 'auto'}>
                 <TouchableOpacity style ={{justifyContent:"center" , justifyContent:'center'}} onPress={() => this.connect()}>
                   <Image source = {require(I_Connect_Fountain)}></Image>
                   <Text style = {Styles.txt_Conneect}>{this.state.connecting}</Text>

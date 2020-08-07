@@ -64,15 +64,26 @@ export default class Bluetooth_connect_Screen extends Component {
       await RNBluetoothClassic.list().then(async (pairedDeviceList) => {
           console.log("List of available paired devices : ", pairedDeviceList);
           if(pairedDeviceList.length > 0){
-            this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...pairedDeviceList]))});
+            this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,
+              ...pairedDeviceList.filter((element) => element.name.startsWith('Fountain') || element.name.startsWith('Saregama'))]))});
           }
 
           console.log("Scanning devices");
           try {
+              
+              setTimeout(async () => {
+                await RNBluetoothClassic.cancelDiscovery().then(() => {
+                  console.log("Scanning stopped.");
+                  
+              }).catch( (error) => {
+                  console.log("Error in stopping Scanning "+error);
+              });
+              }, 8000);
               await RNBluetoothClassic.discoverDevices().then((deviceList) => {
                   console.log("Scanning completed. Devices : ", deviceList);
                   if(deviceList.length > 0){
-                    this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,...deviceList]))});
+                    this.setState({ devices: Array.from(this.uniqueDevices([...this.state.devices,
+                      ...deviceList.filter((element) => element.name.startsWith('Fountain') || element.name.startsWith('Saregama'))]))});
                   }
               }).catch( (error) => {
                   console.log("Error in Scanning devices Error "+error);
