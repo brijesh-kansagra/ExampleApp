@@ -54,7 +54,7 @@ export default class Start_Record_Screen extends Component {
       hasPermission: undefined,
       frequency: 0,
       fountainHeight: 0,
-      timer: 0
+      timer: 30
     };
 
   };
@@ -94,7 +94,7 @@ export default class Start_Record_Screen extends Component {
     });
   }
   decrementTimer = () => {
-    this.setState((prevstate) => ({ timer: prevstate.timer+1 }));
+    this.setState((prevstate) => ({ timer: prevstate.timer-1 }));
   };
 
   async _stop() {
@@ -104,7 +104,7 @@ export default class Start_Record_Screen extends Component {
     }*/
     clearInterval(this.countDown);
     this.setState({stoppedRecording: true, recording: false, paused: false, fountainHeight:0 });
-    this.setState({ minCount: 5, maxCount: 25, isonPress: false, recordingMessage: 'START', timer:30 });
+    this.setState({ minCount: 5, maxCount: 25, isonPress: false, timer:30 });
     
     try {
       const filePath = await AudioRecorder.stopRecording();
@@ -153,10 +153,10 @@ export default class Start_Record_Screen extends Component {
     this.countDown = setInterval(() => {
       this.decrementTimer();
     }, 1000);
-/*
+
     setTimeout(async () => {
       await this._stop();
-    },30000);*/
+    },30000);
   }
 
   _finishRecording(didSucceed, filePath, fileSize) {
