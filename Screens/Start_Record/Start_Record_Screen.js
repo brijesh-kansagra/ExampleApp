@@ -98,10 +98,10 @@ export default class Start_Record_Screen extends Component {
   };
 
   async _stop() {
-    if (!this.state.recording) {
+    /*if (!this.state.recording) {
       console.warn('Can\'t stop, not recording!');
       return;
-    }
+    }*/
     clearInterval(this.countDown);
     this.setState({stoppedRecording: true, recording: false, paused: false, fountainHeight:0 });
     this.setState({ minCount: 5, maxCount: 25, isonPress: false, recordingMessage: 'START', timer:30 });
@@ -143,6 +143,9 @@ export default class Start_Record_Screen extends Component {
     try {
       const filePath = await AudioRecorder.startRecording();
       console.log('recording started. File created at ',filePath);
+      await new Promise(resolve => setTimeout(resolve, 3000)); // 3 sec
+      console.log('playing started...');
+      this._play()
     } catch (error) {
       console.error(error);
     }
@@ -162,9 +165,9 @@ export default class Start_Record_Screen extends Component {
   }
 
   async _play() {
-    if (this.state.recording) {
+    /*if (this.state.recording) {
       await this._stop();
-    }
+    }*/
     // These timeouts are a hacky workaround for some issues with react-native-sound.
     // See https://github.com/zmxv/react-native-sound/issues/89.
     setTimeout(() => {
