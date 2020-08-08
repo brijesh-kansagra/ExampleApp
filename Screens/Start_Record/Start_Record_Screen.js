@@ -54,7 +54,7 @@ export default class Start_Record_Screen extends Component {
       hasPermission: undefined,
       frequency: 0,
       fountainHeight: 0,
-      timer: 30
+      timer: 0
     };
 
   };
@@ -94,7 +94,7 @@ export default class Start_Record_Screen extends Component {
     });
   }
   decrementTimer = () => {
-    this.setState((prevstate) => ({ timer: prevstate.timer-1 }));
+    this.setState((prevstate) => ({ timer: prevstate.timer+1 }));
   };
 
   async _stop() {
@@ -124,7 +124,8 @@ export default class Start_Record_Screen extends Component {
   async _record() {
 
     if (this.state.recording) {
-      console.warn('Already recording!');
+      console.log('Already recording! Hence stopping');
+      await this._stop();
       return;
     }
 
@@ -136,7 +137,7 @@ export default class Start_Record_Screen extends Component {
     if(this.state.stoppedRecording){
       this.prepareRecordingPath(this.state.audioPath);
     }
-    this.setState({ minCount: 5, maxCount: 25, isonPress: true, recordingMessage: 'Recording' });
+    this.setState({ minCount: 5, maxCount: 25, isonPress: true, recordingMessage: 'STOP' });
     this.setState({recording: true, paused: false});
 
     try {
@@ -149,10 +150,10 @@ export default class Start_Record_Screen extends Component {
     this.countDown = setInterval(() => {
       this.decrementTimer();
     }, 1000);
-
+/*
     setTimeout(async () => {
       await this._stop();
-    },30000);
+    },30000);*/
   }
 
   _finishRecording(didSucceed, filePath, fileSize) {
